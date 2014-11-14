@@ -22,6 +22,8 @@ class ObjectManager:
 					self.instance.append(Player(j,i))
 				if (map[i][j] == "S"):
 					self.instance.append(Solid(j,i))
+		if (self.room == 0):
+			self.instance.append(SolidPuzzle1(19,3))
 	def update(self,controlsPressed, controlsHold, mousePressed, mousePos, codingBar, viewX=0, viewY=0):
 		for i in range(0,len(self.instance)):
 			self.instance[i].update(controlsPressed,controlsHold)

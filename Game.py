@@ -19,6 +19,7 @@ mousePressed = False
 mousePos = False
 gameLoop = True
 OBJMAN = ObjectManager()
+OBJMAN.setUpRoom()
 #Get Everything back to Normal
 files = []
 for (dirpath, dirnames, filenames) in walk("Default/"):
