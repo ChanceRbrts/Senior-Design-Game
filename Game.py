@@ -25,16 +25,19 @@ for (dirpath, dirnames, filenames) in walk("Default/"):
 	files.extend(filenames)
 	break
 for i in range(0,len(files)):
-	fileOpen = open(files[i],'r')
+	fileOpen = open("Default/"+files[i],'r')
 	tempStr = ""
 	for j in range(8,len(files[i])):
 		tempStr += files[i][j]
 	tempStr = files[i]
-	fileWrite = open("Game/"+files[i],'w')
-	for j in range(0,len(fileOpen)):
-		fileWrite.write(fileOpen[j])
-	fileWrite.close()
-	fileOpen.close()
+	try:
+		fileWrite = open("Game/"+files[i],'w')
+		for line in fileOpen:
+			fileWrite.write(line)
+		fileWrite.close()
+		fileOpen.close()
+	except IOError:
+		print files[i]
 while (gameLoop):
 	for e in pygame.event.get():
 		controls.controlEvents(e)

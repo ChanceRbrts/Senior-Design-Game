@@ -10,7 +10,8 @@ class Instance():
 		self.xSpace = 1
 		self.ySpace = 1
 		self.collision = "Full"
-        self.name = ""
+		self.codeToChange = "Instance.py"
+		self.name = ""
 	def update(self,controlPressed,controlHold):
 		return(0)
 	def finishUpdate(self):

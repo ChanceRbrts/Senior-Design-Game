@@ -10,6 +10,7 @@ class Player(Instance.Instance):
 		self.downHold = False
 		self.xSpace = 1
 		self.ySpace = 1
+		self.name = ""
 	def update(self,controlPressed,controlHold):
 		for i in range(0,len(controlHold)):
 			if controlHold[i] == K_LEFT:

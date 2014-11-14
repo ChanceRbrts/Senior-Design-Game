@@ -4,6 +4,6 @@ class SolidPuzzle1(Solid):
 		Solid.__init__(self,oX,oY,oW,oH)
 		self.name = "SolidPuzzle1"
 	def update(self,controlPressed,controlHold):
-        self.dY = 4
-    def finishUpdate(self):
-        self.y += self.dY
+		self.dY = 4
+	def finishUpdate(self):
+		self.y += self.dY

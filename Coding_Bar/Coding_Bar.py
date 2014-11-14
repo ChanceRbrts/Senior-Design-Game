@@ -48,9 +48,9 @@ class Coding_Bar:
 	def getName(self):
 		return(self.fileName)
 	def update(self, controlsPressed, controlsHold, mousePressed, mousePos, OBJMAN):
-        for i in range(0,len(controlsHold)):
-            if controlsHold[i] == K_RSHIFT or controlsHold[i] == K_LSHIFT:
-                self.shift = True
+		for i in range(0,len(controlsHold)):
+		    if controlsHold[i] == K_RSHIFT or controlsHold[i] == K_LSHIFT:
+		        self.shift = True
 		for i in range(0,len(controlsPressed)):
 			if controlsPressed[i] == K_LEFT:
 				self.leftPressed = True
@@ -62,31 +62,33 @@ class Coding_Bar:
 				self.downPressed = True
 			if (controlsPressed[i] == K_LEFT) == False and (controlsPressed[i] == K_RIGHT) == False and (controlsPressed[i] == K_UP) == False and (controlsPressed[i] == K_DOWN) == False:
 				if (controlsPressed[i] == K_RETURN or controlsPressed[i] == K_KP_ENTER):
-                    tempStr = ""
-                    tempStr2 = ""
-                    for j in range(0,self.col):
-                        tempStr += str[self.row][j]
-                    for j in range(self.col, len(str[self.row])):
-                        tempStr2 += str[self.row][j]
-                    self.str[self.row] = tempStr
-                    self.str.insert(tempStr2,self.row+1)
+					tempStr = ""
+					tempStr2 = ""
+					for j in range(0,self.col):
+						tempStr += self.str[self.row][j]
+					for j in range(self.col, len(self.str[self.row])):
+						tempStr2 += self.str[self.row][j]
+					self.str[self.row] = tempStr
+					self.str.insert(self.row+1,tempStr2)
 					self.row += 1
-                    self.col = 0
+					self.col = 0
 				elif controlsPressed[i] == K_BACKSPACE or controlsPressed[i] == K_DELETE:
 					if self.col > 0:
-						tempStr = self.str[self.row]
-						for k in range(0,self.col):
+						tempStr = ""
+						for k in range(0,self.col-1):
 							tempStr += self.str[self.row][k]
-						for k in range(self.col+1,len(str[self.row])):
+						for k in range(self.col,len(self.str[self.row])):
 							tempStr += self.str[self.row][k]
 						self.str[self.row] = tempStr
-					else:
+						self.col -= 1
+					elif self.row > 0:
 						tempStr = str[self.row]
 						self.str.pop(self.row)
 						self.row -= 1
 						self.str[self.row] = self.str[self.row]+tempStr
-				else:
+				elif controlsPressed[i] is not K_RSHIFT and controlsPressed[i] is not K_LSHIFT:
 					tempStr = ""
+					moveTheCol = False
 					for k in range(0,self.col):
 						tempStr += self.str[self.row][k]
 					for k in range(0,len(self.keys)):
@@ -95,9 +97,11 @@ class Coding_Bar:
 								tempStr += self.upperCase[k]
 							else:
 								tempStr += self.lowerCase[k]
+							moveTheCol = True
 					for k in range(self.col,len(self.str[self.row])):
 						tempStr += self.str[self.row][k]
-					self.col += 1
+					if moveTheCol:
+						self.col += 1
 					self.str[self.row] = tempStr
 		if self.leftPressed and not self.rightPressed:
 			self.col -= 1;
@@ -138,14 +142,13 @@ class Coding_Bar:
 		self.upPressed = False
 		self.downPressed = False
 		self.shift = False
-        if (mousePressed and mousePos[1] >= 450):
-            OBJMAN.setStrings(self.str,self.fileName)
+		if (mousePressed and mousePos[1] >= 450):
+			OBJMAN.setStrings(self.str,self.fileName)
 	def draw(self,Window,rightedge):
 		pygame.draw.rect(Window,(255,255,255),(640,0,rightedge-640,450))
-        pygame.draw.rect(Window, (0,0,255),(640,440,rightedge-640,450))
-        text = pygame.font.Font(None,32)
-        Window.blit(text.render("COMPILE",0,(0,0,0)),(640+((rightedge-640)/2)-48,450))
-        Window.blit(text)
+		pygame.draw.rect(Window, (0,0,255),(640,440,rightedge-640,450))
+		text = pygame.font.Font(None,32)
+		Window.blit(text.render("COMPILE",0,(0,0,0)),(640+((rightedge-640)/2)-48,450))
 		text = pygame.font.Font(None,16)
 		for i in range(0,len(self.str)):
-			Window.blit(text.render(self.str[i],0,(0,0,0)),(640,i/10*16))
+			Window.blit(text.render(self.str[i],0,(0,0,0)),(640,i*12))
