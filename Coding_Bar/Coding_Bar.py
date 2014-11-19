@@ -39,6 +39,7 @@ class Coding_Bar:
 			"R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3",
 			"4", "5", "6", "7", "8", "9", ".", "/", 
 			"*", "-", "+", "="]
+		self.fileName = ""
 	def setString(self, Set):
 		self.str = Set
 	def getString(self):
@@ -114,7 +115,7 @@ class Coding_Bar:
 			self.downCol = self.col
 		elif self.rightPressed and not self.leftPressed:
 			self.col += 1;
-			if self.col > len(self.str[self.row])-1:
+			if self.col > len(self.str[self.row]):
 				if self.row < len(self.str):
 					self.row += 1
 					self.col = 0
@@ -149,6 +150,7 @@ class Coding_Bar:
 		pygame.draw.rect(Window, (0,0,255),(640,440,rightedge-640,450))
 		text = pygame.font.Font(None,32)
 		Window.blit(text.render("COMPILE",0,(0,0,0)),(640+((rightedge-640)/2)-48,450))
-		text = pygame.font.Font(None,16)
+		text = pygame.font.SysFont("monospace",12)
+		pygame.draw.rect(Window, (0,0,0),(640+self.col*7,self.row*12,2,16))
 		for i in range(0,len(self.str)):
 			Window.blit(text.render(self.str[i],0,(0,0,0)),(640,i*12))

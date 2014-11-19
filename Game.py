@@ -1,28 +1,9 @@
 import pygame
 from pygame.locals import*
 from Controls import*
-from Game.ObjectManager import*
-from Coding_Bar.Coding_Bar import*
 from os import walk
-pygame.init()
-nextFrame = pygame.time.Clock()
-rightEdge = 1000
-screenUpdate = True
-Window = pygame.display.set_mode((rightEdge,480))
-pygame.display.set_caption("Project Code")
-controls = Controls()
-controlsPressed = []
-controlsHold = []
-codingBar = Coding_Bar()
-codingBar.setString([""]);
-mousePressed = False
-mousePos = False
-gameLoop = True
-OBJMAN = ObjectManager()
-OBJMAN.setUpRoom()
-#Get Everything back to Normal
 files = []
-for (dirpath, dirnames, filenames) in walk("Default/"):
+'''for (dirpath, dirnames, filenames) in walk("Default/"):
 	files.extend(filenames)
 	break
 for i in range(0,len(files)):
@@ -38,7 +19,29 @@ for i in range(0,len(files)):
 		fileWrite.close()
 		fileOpen.close()
 	except IOError:
-		print files[i]
+		print files[i]'''
+from Game.ObjectManager import*
+from Coding_Bar.Coding_Bar import*
+import thread
+import sys
+import time
+pygame.init()
+nextFrame = pygame.time.Clock()
+rightEdge = 1020
+screenUpdate = True
+Window = pygame.display.set_mode((rightEdge,480))
+pygame.display.set_caption("Project Code")
+controls = Controls()
+controlsPressed = []
+controlsHold = []
+codingBar = Coding_Bar()
+codingBar.setString([""]);
+mousePressed = False
+mousePos = False
+gameLoop = True
+OBJMAN = ObjectManager()
+OBJMAN.setUpRoom()
+#Get Everything back to Normal
 while (gameLoop):
 	for e in pygame.event.get():
 		controls.controlEvents(e)
