@@ -2,24 +2,6 @@ import pygame
 from pygame.locals import*
 from Controls import*
 from os import walk
-files = []
-'''for (dirpath, dirnames, filenames) in walk("Default/"):
-	files.extend(filenames)
-	break
-for i in range(0,len(files)):
-	fileOpen = open("Default/"+files[i],'r')
-	tempStr = ""
-	for j in range(8,len(files[i])):
-		tempStr += files[i][j]
-	tempStr = files[i]
-	try:
-		fileWrite = open("Game/"+files[i],'w')
-		for line in fileOpen:
-			fileWrite.write(line)
-		fileWrite.close()
-		fileOpen.close()
-	except IOError:
-		print files[i]'''
 from Game.ObjectManager import*
 from Coding_Bar.Coding_Bar import*
 import thread
@@ -40,10 +22,26 @@ mousePressed = False
 mousePos = False
 gameLoop = True
 OBJMAN = ObjectManager()
+OBJMAN.room = int(sys.argv[1])
 OBJMAN.setUpRoom()
+if (int(sys.argv[2]) > -1):
+	for i in range(0,len(OBJMAN.instance)):
+		if (OBJMAN.instance[i].name == "Player"):
+			OBJMAN.instance[i].x = int(sys.argv[2])
+			OBJMAN.instance[i].y = int(sys.argv[3])
 #Get Everything back to Normal
 while (gameLoop):
 	for e in pygame.event.get():
+		if e.type == pygame.QUIT:
+			fileWrite = open('save.txt','w')
+			fileWrite.write(str(OBJMAN.room)+"\n")
+			for i in range(0,len(OBJMAN.instance)):
+				if (OBJMAN.instance[i].name == "Player"):
+					fileWrite.write(str(OBJMAN.instance[i].x)+"\n")
+					fileWrite.write(str(OBJMAN.instance[i].y)+"\n")
+			fileWrite.write("0 ")
+			fileWrite.close()
+			sys.exit()
 		controls.controlEvents(e)
 	controlsPressed = controls.getControlsPressed()
 	controlsHold = controls.getControlsHold()
@@ -58,7 +56,7 @@ while (gameLoop):
 	if (screenUpdate):
 		OBJMAN.update(controlsPressed,controlsHold, mousePressed, mousePos, codingBar)
 	else:
-		codingBar.update(controlsPressed, controlsHold,mousePressed, mousePos, OBJMAN)
+		codingBar.update(controlsPressed, controlsHold,mousePressed, mousePos, OBJMAN, rightEdge)
 	OBJMAN.draw(Window)
 	codingBar.draw(Window,rightEdge)
 	pygame.display.flip()

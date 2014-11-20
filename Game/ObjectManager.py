@@ -5,6 +5,7 @@ import pygame
 from pygame.locals import*
 import py_compile
 import os
+import sys
 
 class ObjectManager:
 	def __init__(self):
@@ -54,14 +55,14 @@ class ObjectManager:
 					codingBar.setName(self.instance[i].name)
 					for j in range(0,len(self.name)):
 						if (self.instance[i].name == self.name[j]):
-							str = []
+							stri = []
 							file = open(self.directory[j],'r')
 							for line in file:
 								tempStr = ""
 								for k in range(0,len(line)-1): #Make it so \n does not appear!
 									tempStr = tempStr+line[k]
-								str.append(tempStr)
-							codingBar.setString(str)
+								stri.append(tempStr)
+							codingBar.setString(stri)
 							file.close()
 		for i in range(0,len(self.instance)):
 			self.instance[i].finishUpdate()
@@ -76,13 +77,13 @@ class ObjectManager:
 					self.viewY = 0
 				elif (self.viewY > self.roomH-480):
 					self.viewY = self.roomH-480
-	def setStrings(self,str,name):
+	def setStrings(self,stri,name):
 		#This is for setting the code of the other things.
 		for i in range(0,len(self.name)):
 			if (self.name[i] == name):
 			        file = open(self.directory[i],'w')
-			        for j in range(0,len(str)):
-			            file.write(str[j]+"\n")
+			        for j in range(0,len(stri)):
+			            file.write(stri[j]+"\n")
 			        file.close()
 			        try:
 					py_compile.compile(self.directory[i],self.directory[i]+"c",self.directory[i],True)
@@ -91,7 +92,14 @@ class ObjectManager:
 					for line in file2:
 						file.write(line)
 					file.close()
-					file2.close
+					file2.close()
+					fileWrite = open("save.txt",'w')
+					fileWrite.write(str(self.room)+"\n")
+					for j in range(0,len(self.instance)):
+						if (self.instance[j].name == "Player"):
+							fileWrite.write(str(self.instance[j].x)+"\n")
+							fileWrite.write(str(self.instance[j].y)+"\n")
+					fileWrite.write("1 ")
 					sys.exit()
 			        except py_compile.PyCompileError:
 					#Have it so the Temporary Directory is the new directory

@@ -1,5 +1,7 @@
 import pygame
 from pygame.locals import*
+import sys
+from os import walk
 class Coding_Bar:
 	def __init__(self):
 		self.col = 0
@@ -48,7 +50,7 @@ class Coding_Bar:
 		self.fileName = Set
 	def getName(self):
 		return(self.fileName)
-	def update(self, controlsPressed, controlsHold, mousePressed, mousePos, OBJMAN):
+	def update(self, controlsPressed, controlsHold, mousePressed, mousePos, OBJMAN, rightedge):
 		for i in range(0,len(controlsHold)):
 		    if controlsHold[i] == K_RSHIFT or controlsHold[i] == K_LSHIFT:
 		        self.shift = True
@@ -145,9 +147,38 @@ class Coding_Bar:
 		self.shift = False
 		if (mousePressed and mousePos[1] >= 450):
 			OBJMAN.setStrings(self.str,self.fileName)
+		if (mousePressed and mousePos[0] >= rightedge-40 and mousePos[1] < 20):
+			files = []
+			for (dirpath, dirnames, filenames) in walk("Default/"):
+				files.extend(filenames)
+				break
+			for i in range(0,len(files)):
+				fileOpen = open("Default/"+files[i],'r')
+				tempStr = ""
+				for j in range(8,len(files[i])):
+					tempStr += files[i][j]
+				tempStr = files[i]
+				try:
+					fileWrite = open("Game/"+files[i],'w')
+					for line in fileOpen:
+						fileWrite.write(line)
+					fileWrite.close()
+					fileOpen.close()
+				except IOError:
+					print files[i]
+			fileWrite = open("save.txt",'w')
+			fileWrite.write("0\n")
+			fileWrite.write("-1\n")
+			fileWrite.write("-1\n")
+			fileWrite.write("1 ")
+			fileWrite.close()
+			sys.exit()
 	def draw(self,Window,rightedge):
 		pygame.draw.rect(Window,(255,255,255),(640,0,rightedge-640,450))
 		pygame.draw.rect(Window, (0,0,255),(640,440,rightedge-640,450))
+		pygame.draw.rect(Window, (0,255,0),(rightedge-40,0,40,20))
+		text = pygame.font.Font(None,16)
+		Window.blit(text.render("Default",0,(0,0,0)),(rightedge-40,4))
 		text = pygame.font.Font(None,32)
 		Window.blit(text.render("COMPILE",0,(0,0,0)),(640+((rightedge-640)/2)-48,450))
 		text = pygame.font.SysFont("monospace",12)
