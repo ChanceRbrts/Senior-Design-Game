@@ -12,6 +12,8 @@ class Instance():
 		self.collision = "Full"
 		self.codeToChange = "Instance.py"
 		self.name = ""
+		self.codingStartVisible = [0]
+		self.codingEndVisible = [999999]
 	def update(self,controlPressed,controlHold):
 		return(0)
 	def finishUpdate(self):

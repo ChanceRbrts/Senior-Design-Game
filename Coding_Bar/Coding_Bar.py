@@ -8,12 +8,15 @@ class Coding_Bar:
 		self.row = 0
 		self.downCol = 0
 		self.str = [""]
+		self.realCode = [""]
 		self.name = ""
 		self.leftPressed = False
 		self.rightPressed = False
 		self.upPressed = False
 		self.downPressed = False
 		self.shift = False
+		self.codeStarts = [0]
+		self.codeEnds = [999999]
 		self.keys = [K_TAB, K_SPACE, K_EXCLAIM, K_HASH, K_DOLLAR, K_AMPERSAND, K_QUOTE,
 			K_LEFTPAREN, K_RIGHTPAREN, K_ASTERISK, K_PLUS, K_COMMA, K_MINUS, K_PERIOD,
 			K_SLASH, K_0, K_1, K_2, K_3, K_4, K_5, K_6, K_7, K_8, K_9, K_COLON, 
@@ -42,11 +45,25 @@ class Coding_Bar:
 			"4", "5", "6", "7", "8", "9", ".", "/", 
 			"*", "-", "+", "="]
 		self.fileName = ""
-	def setString(self, Set):
-		self.str = Set
+	def setString(self,Set,codeStarts=[0],codeEnds=[999999]):
+		self.realCode = Set
+		settingString = []
+		if (codeStarts[0] > 0):
+			settingString.append("...")
+		for i in range(0,len(codeStarts)):
+			for line in range(codeStarts[i],codeEnds[i]):
+				if (len(self.realCode) > line):
+					settingString.append(self.realCode[line])
+				else:
+					break
+			if (codeEnds[i] < 999999):
+				settingString.append("...")
+		self.codeStarts = codeStarts
+		self.codeEnds = codeEnds
+		self.str = settingString
 	def getString(self):
 		return(self.str)
-	def setName(self, Set):
+	def setName(self,Set):
 		self.fileName = Set
 	def getName(self):
 		return(self.fileName)
@@ -146,7 +163,45 @@ class Coding_Bar:
 		self.downPressed = False
 		self.shift = False
 		if (mousePressed and mousePos[1] >= 450):
-			OBJMAN.setStrings(self.str,self.fileName)
+			strings = []
+			codeStarts = [0]
+			codeEnds = []
+			currentCodeEnd = 0
+			for i in range(0,len(self.str)):
+				if (self.str[i] == "..."):
+					if (i == 0):
+						for i in range(0, self.codeStarts[0]):
+							strings.append(self.realCode[i])
+						codeStarts = [len(strings)]
+					else:
+						codeEnds.append(len(strings))
+						if (currentCodeEnd+1 < len(self.codeEnds)):
+							for i in range(self.codeEnds[currentCodeEnd],self.codeStarts[currentCodeEnd+1]):
+								strings.append(self.realCode[i])
+							codeStarts.append(len(strings))
+						else:
+							for i in range(self.codeEnds[currentCodeEnd],len(self.realCode)):
+								strings.append(self.realCode[i])
+						currentCodeEnd += 1
+				else:
+					strings.append(self.str[i])
+			for i in range(0,len(strings)):
+				#Concept
+				if (strings[i][:25] == "\t\tself.codingStartVisible"):
+					replaceStr = "\t\tself.codingStartVisible = ["
+					for j in range(0,len(codeStarts)):
+						replaceStr += str(codeStarts[j])
+						replaceStr += ","
+					replaceStr += "]"
+					strings[i] = replaceStr
+				if (strings[i][:23] == "\t\tself.codingEndVisible"):
+					replaceStr = "\t\tself.codingEndVisible = ["
+					for j in range(0,len(codeEnds)):
+						replaceStr += str(codeEnds[j])
+						replaceStr += ","
+					replaceStr += "]"
+					strings[i] = replaceStr
+			OBJMAN.setStrings(strings,self.fileName)
 		if (mousePressed and mousePos[0] >= rightedge-40 and mousePos[1] < 20):
 			files = []
 			for (dirpath, dirnames, filenames) in walk("Default/"):

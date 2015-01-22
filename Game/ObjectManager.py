@@ -62,7 +62,7 @@ class ObjectManager:
 								for k in range(0,len(line)-1): #Make it so \n does not appear!
 									tempStr = tempStr+line[k]
 								stri.append(tempStr)
-							codingBar.setString(stri)
+							codingBar.setString(stri,self.instance[i].codingStartVisible,self.instance[i].codingEndVisible)
 							file.close()
 		for i in range(0,len(self.instance)):
 			self.instance[i].finishUpdate()
