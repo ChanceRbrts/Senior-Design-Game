@@ -1,6 +1,7 @@
 from Player import*
 from Solid import*
-import SolidPuzzle1 
+import SolidPuzzle1
+import SolidPuzzle2
 import pygame
 from pygame.locals import*
 import py_compile
@@ -11,12 +12,13 @@ class ObjectManager:
 	def __init__(self):
 		self.instance = [Player(5,5),Solid(2,2)]
 		self.bg = (123,123,123)
-		self.name = ["SolidPuzzle1"]
-		self.directory = ["Game/SolidPuzzle1.py"]
-		self.tempDirectory = ["Temporary/SolidPuzzle1.py"]
+		self.name = ["SolidPuzzle1","SolidPuzzle2"]
+		self.directory = ["Game/SolidPuzzle1.py","Game/SolidPuzzle2.py"]
+		self.tempDirectory = ["Temporary/SolidPuzzle1.py","Temporary/SolidPuzzle2.py"]
 		self.maps = ["Game/Maps/TestMap.txt"]
 		self.room = 0
 		self.SP1 = SolidPuzzle1.SolidPuzzle1
+		self.SP2 = SolidPuzzle2.SolidPuzzle2
 		self.exit = False
 		self.viewX = 0
 		self.viewY = 0
@@ -38,7 +40,8 @@ class ObjectManager:
 		self.roomH = i*32
 		if (self.room == 0):
 			#self.instance.append(Player(1,1))
-			self.instance.append(self.SP1(19,3))
+			self.instance.append(self.SP2(19,3))
+			self.instance.append(self.SP1(45,10))
 	def update(self,controlsPressed, controlsHold, mousePressed, mousePos, codingBar):
 		for i in range(0,len(self.instance)):
 			self.instance[i].update(controlsPressed,controlsHold)
