@@ -11,6 +11,7 @@ class Instance():
 		self.ySpace = 1
 		self.collision = "Full"
 		self.codeToChange = "Instance.py"
+		self.ramEverythingDown = False
 		self.name = ""
 		self.codingStartVisible = [0]
 		self.codingEndVisible = [999999]
@@ -41,3 +42,8 @@ class Instance():
 					self.x+self.dX < oX+oW and self.x >= oX+oW):
 				self.x = oX+oW
 				self.dX = 0
+	def collideWithMonster(self, oX, oY, oW, oH, oDX=0, oDY=0):
+		if (self.x+self.dX < oX+oW+oDX and self.x+self.dX > oX+oDX and self.y+self.dY < oY+oH+oDY and self.y+self.dY > oY+oDY):
+			return(True)
+		return(False)
+	
