@@ -7,4 +7,5 @@ class Solid(Instance):
 		self.width = oW*32
 		self.height = oH*32
 		self.collision = "Solid"
+		self.name = "Solid"
 		self.codeToChange = "Solid.py"
