@@ -6,7 +6,7 @@ class SolidPuzzle1(Solid):
 		self.codingStartVisible = [8,10,]
 		self.codingEndVisible = [9,11,]
 	def update(self,controlPressed,controlHold):
-		self.dY = 2
+		self.dY = -2
 	def finishUpdate(self):
 		self.y += self.dY
 	def draw(self,Window,viewX,viewY):

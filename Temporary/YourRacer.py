@@ -9,11 +9,11 @@ class YourRacer(Solid):
 		#/ Divides a Variable
 		#% Gives you the Remainder
 		#- Subtracts Things
-		self.dX = -12
+		self.dX = 1
 		self.codingStartVisible = [5,15,19,]
 		self.codingEndVisible = [12,16,20,]
 	def update(self,controlPressed,controlHold):
-		self.dX += 1
+		self.dX *= 2
 		if (self.dX > 101010):
 			self.dX = 101010
 	def finishUpdate(self):

@@ -10,23 +10,48 @@ import RaceAssist
 import GenericMonster1
 import ProjectilePuzzle
 import ProjectileForPuzzle
+import Conditional_Puzzle_1
+import SafeSpot
+import NotSafeSpot
+import TintTheWalkway
+import Laser_Catcher
+import Laser
+import Conditional_Puzzle_3
+import Laser_Emitter
+import Conditional_Puzzle_4
+import CondPuzzle4Block
+import Cond4Enemy
+import For_Loops
+import ForLoop1Square
+import ForLoop1BlockMove
+import Array_Puzzle
 import pygame
 from pygame.locals import*
 import py_compile
 import os
 import sys
 import math
+import Save_File
+import Load_File
 
 class ObjectManager:
 	def __init__(self):
 		self.instance = [Player(5,5),Solid(2,2)]
 		self.bg = (123,123,123)
-		self.name = ["SolidPuzzle1","SolidPuzzle2","SolidPuzzle3","YourRacer","ProjectilePuzzle"]
+		self.name = ["SolidPuzzle1","SolidPuzzle2","SolidPuzzle3","YourRacer","ProjectilePuzzle",
+					 "Conditional_Puzzle_1","TintTheWalkway","Laser_Emitter","Save_File","Load_File",
+					 "Conditional_Puzzle_4","For_Loops","Array_Puzzle"]
 		self.directory = ["Game/SolidPuzzle1.py","Game/SolidPuzzle2.py","Game/SolidPuzzle3.py",
-				  "Game/YourRacer.py","Game/ProjectilePuzzle.py"]
+				  "Game/YourRacer.py","Game/ProjectilePuzzle.py","Game/Conditional_Puzzle_1.py",
+				  "Game/TintTheWalkway.py","Game/Laser_Emitter.py","Game/Save_File.py",
+				  "Game/Load_File.py","Game/Conditional_Puzzle_4.py","Game/For_Loops.py",
+				  "Game/Array_Puzzle.py"]
 		self.tempDirectory = ["Temporary/SolidPuzzle1.py","Temporary/SolidPuzzle2.py","Temporary/SolidPuzzle3.py",
-				      "Temporary/YourRacer.py","Temporary/ProjectilePuzzle.py"]
-		self.maps = ["Game/Maps/TestMap.txt","Conditionals.txt"]
+				      "Temporary/YourRacer.py","Temporary/ProjectilePuzzle.py","Temporary/Conditional_Puzzle_1.py",
+				      "Temporary/TintTheWalkway.py","Temporary/Laser_Emitter.py","Temporary/Save_File.py",
+				      "Temporary/Load_File.py","Temporary/Conditional_Puzzle_4.py","Temporary/For_Loops.py",
+				      "Temporary/Array_Puzzle.py"]
+		self.maps = ["Game/Maps/TestMap.txt","Game/Maps/Conditionals.txt","Game/Maps/Loops.txt"]
 		self.room = 0
 		self.SP1 = SolidPuzzle1.SolidPuzzle1
 		self.SP2 = SolidPuzzle2.SolidPuzzle2
@@ -39,15 +64,37 @@ class ObjectManager:
 		self.sDX = 0
 		self.PP = ProjectilePuzzle.ProjectilePuzzle
 		self.PFP = ProjectileForPuzzle.ProjectileForPuzzle
+		self.CP1 = Conditional_Puzzle_1.Conditional_Puzzle_1
+		self.SS = SafeSpot.SafeSpot
+		self.NSS = NotSafeSpot.NotSafeSpot
+		self.TTW = TintTheWalkway.TintTheWalkway
+		self.LC = Laser_Catcher.Laser_Catcher
+		self.L = Laser.Laser
+		self.CP3 = Conditional_Puzzle_3.Conditional_Puzzle_3
+		self.LE = Laser_Emitter.Laser_Emitter
+		self.CP4 = Conditional_Puzzle_4.Conditional_Puzzle_4
+		self.CP4B = CondPuzzle4Block.CondPuzzle4Block
+		self.C4E = Cond4Enemy.Cond4Enemy
+		self.FL = For_Loops.For_Loops
+		self.FL1S = ForLoop1Square.ForLoop1Square
+		self.FL1BM = ForLoop1BlockMove.ForLoop1BlockMove
+		self.AP = Array_Puzzle.Array_Puzzle
+		self.SF = Save_File.Save_File
+		self.LF = Load_File.Load_File
 		self.theRaces = True
 		self.cheatTheRace = True
 		self.hasNotBumped = True
 		self.hasNotProjectiled = True
 		self.exit = False
+		self.oInstance = []
+		self.sInstance = []
 		self.viewX = 0
 		self.viewY = 0
 		self.roomW = 0
 		self.roomH = 0
+		self.numForCP3 = -1
+		self.numForCP4 = -1
+		self.numForFP1 = -1
 	def setUpRoom(self):
 		self.instance = []
 		map = open(self.maps[self.room],'r')
@@ -60,6 +107,11 @@ class ObjectManager:
 					self.instance.append(Player(j,i))
 				if (line[j] == "S"):
 					self.instance.append(Solid(j,i))
+				if (j >= 40 and j < 57 and self.room == 1):
+						if (line[j] == "0"):
+								self.instance.append(self.NSS(j,i))
+						if (line[j] == "1"):
+								self.oInstance.append(self.SS(j,i))
 			i += 1
 		self.roomH = i*32
 		if (self.room == 0):
@@ -77,9 +129,50 @@ class ObjectManager:
 				for i in range(0,45):
 						self.instance.append(self.PFP())
 				self.instance.append(self.PP(127,5))
+		if (self.room == 1):
+				self.instance.append(self.CP1(5,5))
+				self.instance.append(self.TTW(38,3))
+				for i in range(len(self.instance)):
+						if self.instance[i].name == "Not Safe Spot":
+								self.instance[i] = self.instance[len(self.instance)-1].tint(self.instance[i])
+				for i in range(len(self.oInstance)):
+						if self.oInstance[i].name == "Safe Spot":
+								self.oInstance[i] = self.instance[len(self.instance)-1].tint(self.oInstance[i])
+				self.numForCP3 = len(self.instance)
+				self.instance.append(self.LE(89,7))
+				self.instance.append(self.L(89,8))
+				self.instance.append(self.LC(89,14))
+				self.instance.append(self.CP3(96,7))
+				self.numForCP4 = len(self.instance)
+				self.instance.append(self.CP4(108,5))
+				self.instance.append(self.CP4B(117,3))
+				self.instance.append(self.C4E(117,0))
+		if (self.room == 2):
+				self.numForFP1 = len(self.instance)
+				self.instance.append(self.FL(10,5))
+				self.instance[len(self.instance)-1].doTheForLoop()
+				self.instance[len(self.instance)-1].correctThisObject()
+				self.instance.append(self.FL1S(18,5))
+				self.instance.append(self.FL1BM(19,11))
+				self.instance.append(self.AP(45,7))
+				for i in range(0,15):
+						self.sInstance.append(Solid(57,i))
+				self.instance[len(self.instance)-1].checkSolid(self.sInstance)
+				for i in range(0,len(self.sInstance)):
+						self.instance.append(self.sInstance[i])
+				
+		self.instance.append(self.SF())
+		self.instance.append(self.LF())
+				
+				
+				
 		
 	def update(self,controlsPressed, controlsHold, mousePressed, mousePos, codingBar):
 		for i in range(0,len(self.instance)):
+				if (self.instance[i].name == "Save_File" or self.instance[i].name == "Load_File"):
+						self.instance[i].changePos(self.viewX,self.viewY)
+				if (self.instance[i].name == "Conditional_Puzzle_1"):
+						self.instance[i].ifStatement(self.instance)
 				if (self.instance[i].name == "SolidPuzzle3Assist"):
 					for j in range(0,len(self.instance)):
 						if (self.instance[j].name == "SolidPuzzle3"):
@@ -148,10 +241,22 @@ class ObjectManager:
 						self.instance[i].update(controlsPressed,controlsHold)
 				else:
 					self.instance[i].update(controlsPressed,controlsHold)
+				if i == self.numForCP3:
+						self.instance[i].setEmit(self.instance[i+2].caught)
+						self.instance[i+1].getActivate(self.instance[i].getEmit())
+						a = self.instance[i+2].checkTheLaser(self.instance[i])
+						self.instance[i+3].getYPosition(a)
+				if i == self.numForCP4:
+						self.instance[i+1].getPos(self.instance[i].getPos(self.instance[i+2].pos))
+						if (self.instance[i+1].isInstanceCollide(self.instance[i+2].x,self.instance[i+2].y,
+																 self.instance[i+2].xSpace*32,self.instance[i+2].ySpace*32)):
+								self.instance[i+2].restartPos()
+				if i == self.numForFP1:
+						self.instance[i+2].check(self.instance[i+1].isInstanceCollide(self.instance[i].x,self.instance[i].y,self.instance[i].xSpace*32,self.instance[i].ySpace*32))
 				if self.instance[i].collision == "Full":
 					for j in range(0,len(self.instance)):
 						if self.instance[j].collision  == "Solid":
-							self.instance[i].collideWithSolid(self.instance[j].x,self.instance[j].y,self.instance[j].xSpace*32,self.instance[j].ySpace*32)
+							self.instance[i].collideWithSolid(self.instance[j].x,self.instance[j].y,self.instance[j].xSpace*32,self.instance[j].ySpace*32,self.instance[j].dX,self.instance[j].dY,self.instance)
 						if self.instance[j].collision == "Monster" and self.instance[i].name == "Player":
 							if (self.instance[i].collideWithMonster(self.instance[j].x,self.instance[j].y,self.instance[j].xSpace*32,self.instance[j].ySpace*32,self.instance[j].dX,self.instance[j].dY)):
 								sys.exit()
@@ -189,36 +294,115 @@ class ObjectManager:
 	def setStrings(self,stri,name):
 		#This is for setting the code of the other things.
 		for i in range(0,len(self.name)):
-			if (self.name[i] == name):
-			        file = open(self.directory[i],'w')
-			        for j in range(0,len(stri)):
-			            file.write(stri[j]+"\n")
-			        file.close()
-			        try:
-					py_compile.compile(self.directory[i],self.directory[i]+"c",self.directory[i],True)
-					file = open(self.tempDirectory[i],'w')
-					file2 = open(self.directory[i],'r')
-					for line in file2:
-						file.write(line)
-					file.close()
-					file2.close()
-					fileWrite = open("save.txt",'w')
-					fileWrite.write(str(self.room)+"\n")
-					for j in range(0,len(self.instance)):
-						if (self.instance[j].name == "Player"):
-							fileWrite.write(str(self.instance[j].x)+"\n")
-							fileWrite.write(str(self.instance[j].y)+"\n")
-					fileWrite.write("1 ")
-					sys.exit()
-			        except py_compile.PyCompileError:
-					#Have it so the Temporary Directory is the new directory
-					file = open(self.tempDirectory[i],'r')
-					file2 = open(self.directory[i],'w')
-					for line in file:
-					    file2.write(line)
-					file.close()
-					file2.close()
+				if (self.name[i] == name and name != "Save_File" and name != "Load_File"):
+				        file = open(self.directory[i],'w')
+				        for j in range(0,len(stri)):
+				            file.write(stri[j]+"\n")
+				        file.close()
+				        try:
+								py_compile.compile(self.directory[i],self.directory[i]+"c",self.directory[i],True)
+								file = open(self.tempDirectory[i],'w')
+								file2 = open(self.directory[i],'r')
+								for line in file2:
+									file.write(line)
+								file.close()
+								file2.close()
+								fileWrite = open("save.txt",'w')
+								fileWrite.write(str(self.room)+"\n")
+								for j in range(0,len(self.instance)):
+									if (self.instance[j].name == "Player"):
+										fileWrite.write(str(self.instance[j].x)+"\n")
+										fileWrite.write(str(self.instance[j].y)+"\n")
+								fileWrite.write("1 ")
+								sys.exit()
+				        except py_compile.PyCompileError:
+								#Have it so the Temporary Directory is the new directory
+								file = open(self.tempDirectory[i],'r')
+								file2 = open(self.directory[i],'w')
+								for line in file:
+								    file2.write(line)
+								file.close()
+								file2.close()
+				elif (self.name[i] == name and name == "Save_File"):
+						savFile = ""
+						for line in open(self.tempDirectory[i],'r'):
+								run = 0
+								for j in range(0,len(line)):
+										if (line[j:j+13] == "self.saveFile" and run == 0):
+												run = 1
+										if (run == 1 and line[j] == "\""):
+												run = 2
+										elif (run == 2):
+												if (line[j] == "\""):
+														run = 3
+												else:
+														savFile += line[j]
+						if (savFile == ""):
+								savFile = "GenericSaveFile"
+						if not os.path.exists(savFile+"/"):
+								os.makedirs(savFile+"/")
+						for j in range(0,len(self.tempDirectory)):
+								file = open(self.tempDirectory[j],'r')
+								file2 = open(savFile+"/"+self.tempDirectory[j][10:],'w')
+								for line in file:
+										file2.write(line)
+								file.close()
+								file2.close()
+						savOpen = open("save.txt","r")
+						savWrite = open(savFile+"/save.txt","w")
+						for line in savOpen:
+								savWrite.write(line)
+						savOpen.close()
+						savWrite.close()
+				elif (self.name[i] == name and name == "Load_File"):
+						loaFile = ""
+						for line in open(self.tempDirectory[i],'r'):
+								run = 0
+								for j in range(0,len(line)):
+										if (line[j:j+13] == "self.loadFile" and run == 0):
+												run = 1
+										if (run == 1 and line[j] == "\""):
+												run = 2
+										elif (run == 2):
+												if (line[j] == "\""):
+														run = 3
+												else:
+														loaFile += line[j]
+						if (loaFile == ""):
+								loaFile = "GenericSaveFile"
+						if os.path.exists(loaFile+"/"):
+								for j in range(0,len(self.tempDirectory)):
+										tempDir = open(self.tempDirectory[j],'w')
+										gameDir = open(self.directory[j],'w')
+										readDir = open(loaFile+"/"+self.tempDirectory[j][10:],'r')
+										for line in readDir:
+												tempDir.write(line)
+												gameDir.write(line)
+										tempDir.close()
+										gameDir.close()
+										readDir.close()
+										py_compile.compile(self.directory[j],self.directory[j]+"c",self.directory[j],True)
+								savOpen = open(loaFile+"/save.txt","r")
+								savWrite = open("save.txt","w")
+								for line in savOpen:
+										savWrite.write(line)
+								savOpen.close()
+								savWrite.close()
+								sys.exit()
+						else:
+								print("The save file " + loaFile + " does not exist.")
+		
 	def draw(self,Window):
 		pygame.draw.rect(Window,self.bg,(0,0,640,480))
+		for i in range(0,len(self.oInstance)):
+				if (self.oInstance[i].x-self.viewX > -self.oInstance[i].xSpace*32
+					and self.oInstance[i].x-self.viewX < 640
+					and self.oInstance[i].y-self.viewY > -self.oInstance[i].ySpace*32
+					and self.oInstance[i].y-self.viewY < 480):
+						self.oInstance[i].draw(Window,self.viewX,self.viewY)
 		for i in range(0,len(self.instance)):
-			self.instance[i].draw(Window,self.viewX,self.viewY)
+				if (self.instance[i].x-self.viewX > -self.instance[i].xSpace*32
+					and self.instance[i].x-self.viewX < 640
+					and self.instance[i].y-self.viewY > -self.instance[i].ySpace*32
+					and self.instance[i].y-self.viewY < 480):
+						self.instance[i].draw(Window,self.viewX,self.viewY)

@@ -228,12 +228,16 @@ class Coding_Bar:
 			fileWrite.write("1 ")
 			fileWrite.close()
 			sys.exit()
+		elif (mousePressed and mousePos[0] >= rightedge-40 and mousePos[1] < 40):
+				sys.exit()
 	def draw(self,Window,rightedge):
 		pygame.draw.rect(Window,(255,255,255),(640,0,rightedge-640,450))
 		pygame.draw.rect(Window, (0,0,255),(640,440,rightedge-640,450))
 		pygame.draw.rect(Window, (0,255,0),(rightedge-40,0,40,20))
+		pygame.draw.rect(Window, (255,0,0),(rightedge-40,20,40,20))
 		text = pygame.font.Font(None,16)
 		Window.blit(text.render("Default",0,(0,0,0)),(rightedge-40,4))
+		Window.blit(text.render("RESET",0,(0,0,0)),(rightedge-40,24))
 		text = pygame.font.Font(None,32)
 		Window.blit(text.render("COMPILE",0,(0,0,0)),(640+((rightedge-640)/2)-48,450))
 		text = pygame.font.SysFont("monospace",12)
