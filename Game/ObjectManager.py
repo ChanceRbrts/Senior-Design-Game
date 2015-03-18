@@ -24,7 +24,19 @@ import Cond4Enemy
 import For_Loops
 import ForLoop1Square
 import ForLoop1BlockMove
+import ForLoop3
 import Array_Puzzle
+import TintTheWalkway2
+import FunctionPuzzle1
+import FunctionPuzzle2
+import FunctionPuzzle3
+import FunctionPuzzle4
+import FunctionPuzzle4Block
+import RecursionPuzzle1
+import RecursionPuzzle1Square
+import RecursionPuzzle1BlockMove
+import ClassPuzzle1
+import ClassPuzzle2
 import pygame
 from pygame.locals import*
 import py_compile
@@ -33,6 +45,7 @@ import sys
 import math
 import Save_File
 import Load_File
+import random
 
 class ObjectManager:
 	def __init__(self):
@@ -40,18 +53,27 @@ class ObjectManager:
 		self.bg = (123,123,123)
 		self.name = ["SolidPuzzle1","SolidPuzzle2","SolidPuzzle3","YourRacer","ProjectilePuzzle",
 					 "Conditional_Puzzle_1","TintTheWalkway","Laser_Emitter","Save_File","Load_File",
-					 "Conditional_Puzzle_4","For_Loops","Array_Puzzle"]
+					 "Conditional_Puzzle_4","For_Loops","Array_Puzzle","TintTheWalkway2","ForLoop3",
+					 "FunctionPuzzle1","FunctionPuzzle2","FunctionPuzzle3","FunctionPuzzle4","RecursionPuzzle1",
+					 "ClassPuzzle1","ClassPuzzle2"]
 		self.directory = ["Game/SolidPuzzle1.py","Game/SolidPuzzle2.py","Game/SolidPuzzle3.py",
 				  "Game/YourRacer.py","Game/ProjectilePuzzle.py","Game/Conditional_Puzzle_1.py",
 				  "Game/TintTheWalkway.py","Game/Laser_Emitter.py","Game/Save_File.py",
 				  "Game/Load_File.py","Game/Conditional_Puzzle_4.py","Game/For_Loops.py",
-				  "Game/Array_Puzzle.py"]
+				  "Game/Array_Puzzle.py","Game/TintTheWalkway2.py","Game/ForLoop3.py",
+				  "Game/FunctionPuzzle1.py","Game/FunctionPuzzle2.py","Game/FunctionPuzzle3.py",
+				  "Game/FunctionPuzzle4.py","Game/RecursionPuzzle1.py","Game/ClassPuzzle1.py",
+				  "Game/ClassPuzzle2.py"]
 		self.tempDirectory = ["Temporary/SolidPuzzle1.py","Temporary/SolidPuzzle2.py","Temporary/SolidPuzzle3.py",
 				      "Temporary/YourRacer.py","Temporary/ProjectilePuzzle.py","Temporary/Conditional_Puzzle_1.py",
 				      "Temporary/TintTheWalkway.py","Temporary/Laser_Emitter.py","Temporary/Save_File.py",
 				      "Temporary/Load_File.py","Temporary/Conditional_Puzzle_4.py","Temporary/For_Loops.py",
-				      "Temporary/Array_Puzzle.py"]
-		self.maps = ["Game/Maps/TestMap.txt","Game/Maps/Conditionals.txt","Game/Maps/Loops.txt"]
+				      "Temporary/Array_Puzzle.py","Temporary/TintTheWalkway2.py","Temporary/ForLoop3.py",
+					  "Temporary/FunctionPuzzle1.py","Temporary/FunctionPuzzle2.py","Temporary/FunctionPuzzle3.py",
+					  "Temporary/FunctionPuzzle4.py","Temporary/RecursionPuzzle1.py","Temporary/ClassPuzzle1.py",
+					  "Temporary/ClassPuzzle2.py"]
+		self.maps = ["Game/Maps/TestMap.txt","Game/Maps/Conditionals.txt","Game/Maps/Loops.txt","Game/Maps/Functions.txt",
+					 "Game/Maps/Classes.txt"]
 		self.room = 0
 		self.SP1 = SolidPuzzle1.SolidPuzzle1
 		self.SP2 = SolidPuzzle2.SolidPuzzle2
@@ -79,6 +101,18 @@ class ObjectManager:
 		self.FL1S = ForLoop1Square.ForLoop1Square
 		self.FL1BM = ForLoop1BlockMove.ForLoop1BlockMove
 		self.AP = Array_Puzzle.Array_Puzzle
+		self.FL3 = ForLoop3.ForLoop3
+		self.TTW2 = TintTheWalkway2.TintTheWalkway2
+		self.FP1 = FunctionPuzzle1.FunctionPuzzle1
+		self.FP2 = FunctionPuzzle2.FunctionPuzzle2
+		self.FP3 = FunctionPuzzle3.FunctionPuzzle3
+		self.FP4 = FunctionPuzzle4.FunctionPuzzle4
+		self.FP4B = FunctionPuzzle4Block.FunctionPuzzle4Block
+		self.RP1 = RecursionPuzzle1.RecursionPuzzle1
+		self.RP1S = RecursionPuzzle1Square.RecursionPuzzle1Square
+		self.RP1BM = RecursionPuzzle1BlockMove.RecursionPuzzle1BlockMove
+		self.ClP1 = ClassPuzzle1.ClassPuzzle1
+		self.ClP2 = ClassPuzzle2.ClassPuzzle2
 		self.SF = Save_File.Save_File
 		self.LF = Load_File.Load_File
 		self.theRaces = True
@@ -88,6 +122,8 @@ class ObjectManager:
 		self.exit = False
 		self.oInstance = []
 		self.sInstance = []
+		self.sFInstance = []
+		self.sSInstance = []
 		self.viewX = 0
 		self.viewY = 0
 		self.roomW = 0
@@ -95,6 +131,7 @@ class ObjectManager:
 		self.numForCP3 = -1
 		self.numForCP4 = -1
 		self.numForFP1 = -1
+		self.bgImage = pygame.image.load('Game/BGs/ForegroundishFade.png')
 	def setUpRoom(self):
 		self.instance = []
 		map = open(self.maps[self.room],'r')
@@ -106,12 +143,20 @@ class ObjectManager:
 				if (line[j] == "P"):
 					self.instance.append(Player(j,i))
 				if (line[j] == "S"):
-					self.instance.append(Solid(j,i))
+						if (self.room == 3 and j >= 57	and j < 72):
+								self.sFInstance.append(Solid(j,i))	
+						else:
+								self.instance.append(Solid(j,i))
 				if (j >= 40 and j < 57 and self.room == 1):
 						if (line[j] == "0"):
 								self.instance.append(self.NSS(j,i))
 						if (line[j] == "1"):
 								self.oInstance.append(self.SS(j,i))
+				if (j >= 94 and j < 113 and self.room == 2):
+						if (line[j] == "0"):
+								self.sSInstance.append(self.NSS(j,i))
+						if (line[j] == "1"):
+								self.sSInstance.append(self.SS(j,i))
 			i += 1
 		self.roomH = i*32
 		if (self.room == 0):
@@ -148,6 +193,7 @@ class ObjectManager:
 				self.instance.append(self.CP4B(117,3))
 				self.instance.append(self.C4E(117,0))
 		if (self.room == 2):
+				self.bg = (0,0,255)
 				self.numForFP1 = len(self.instance)
 				self.instance.append(self.FL(10,5))
 				self.instance[len(self.instance)-1].doTheForLoop()
@@ -160,7 +206,51 @@ class ObjectManager:
 				self.instance[len(self.instance)-1].checkSolid(self.sInstance)
 				for i in range(0,len(self.sInstance)):
 						self.instance.append(self.sInstance[i])
-				
+				self.instance.append(self.TTW2(90,8))
+				self.sSInstace = self.instance[len(self.instance)-1].tint(self.sSInstance)
+				for i in range(0,len(self.sSInstance)):
+						if (self.sSInstance[i].name == "Safe Spot"):
+								self.oInstance.append(self.sSInstance[i])
+						if (self.sSInstance[i].name == "Not Safe Spot"):
+								self.instance.append(self.sSInstance[i])
+				self.instance.append(self.FL3(87,9))
+				stri = self.instance[len(self.instance)-1].whileString()
+				os.system("say "+stri)
+				if (stri == "AAAAAAAAAAAAAAAA"):
+						self.instance[len(self.instance)-1].x = 0
+		if (self.room == 3):
+				self.bg = (0,255,100)
+				self.instance.append(self.FP1(19,7))
+				self.instance.append(Solid(48,6))
+				self.instance.append(self.FP2(37,8))
+				self.instance[len(self.instance)-2] = self.instance[len(self.instance)-1].function(self.instance[len(self.instance)-2])
+				xS = []
+				yS = []
+				for i in range(0,len(self.sFInstance)):
+						xS.append(self.sFInstance[i].x-57*32)
+						yS.append(self.sFInstance[i].y)
+				self.instance.append(self.FP3(56,5))
+				b = self.instance[len(self.instance)-1].moveSolidObjects(xS,yS)
+				xS = b[0]
+				yS = b[1]
+				for i in range(0,len(self.sFInstance)):
+						self.sFInstance[i].x = xS[i]+57*32
+						self.sFInstance[i].y = yS[i]
+						self.instance.append(self.sFInstance[i])
+				self.instance.append(self.FP4(86,3))
+				self.instance.append(self.FP4B(90,7))
+				self.instance[len(self.instance)-1].verifyValue(self.instance[len(self.instance)-2].valueForOtherObject(0))
+				self.instance.append(self.RP1(100,1))
+				self.instance.append(self.RP1S(107,1))
+				self.instance.append(self.RP1BM(106,13))
+				self.instance[len(self.instance)-3].recursion(self.instance[len(self.instance)-2])
+				tmpI = self.instance[len(self.instance)-3]
+				self.instance[len(self.instance)-1].check(self.instance[len(self.instance)-2].isInstanceCollide(tmpI.x,tmpI.y,tmpI.xSpace*32,tmpI.ySpace*32))
+		if (self.room == 4):
+				self.bg = (255,100,0)
+				self.instance.append(self.ClP1(11,14))
+				self.instance.append(self.ClP2(19,21))
+				self.instance[len(self.instance)-1].checkType()
 		self.instance.append(self.SF())
 		self.instance.append(self.LF())
 				
@@ -394,6 +484,7 @@ class ObjectManager:
 		
 	def draw(self,Window):
 		pygame.draw.rect(Window,self.bg,(0,0,640,480))
+		Window.blit(self.bgImage,(0,0))
 		for i in range(0,len(self.oInstance)):
 				if (self.oInstance[i].x-self.viewX > -self.oInstance[i].xSpace*32
 					and self.oInstance[i].x-self.viewX < 640

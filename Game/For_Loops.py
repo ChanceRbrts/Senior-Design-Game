@@ -10,7 +10,7 @@ class For_Loops(Solid):
 		self.forLoop = 0
 		self.startX = self.x
 	def doTheForLoop(self):
-		for i in range(0,2):
+		for i in range(0,16):
 			self.x += 16
 			self.forLoop += 1
 	def correctThisObject(self):

@@ -13,9 +13,8 @@ class Array_Puzzle(Solid):
 		Solid.__init__(self,oX,oY,oW,oH)
 		self.name = "Array_Puzzle"
 		self.codingStartVisible = [0,17,]
-		self.codingEndVisible = [9,20,]
+		self.codingEndVisible = [9,19,]
 	def checkSolid(self,instance):
 		for i in range(0,len(instance)):
-			if (instance[i].y == 7*32):
-				instance[i].x = 0
+			instance[i].y = 0
 		return(instance)

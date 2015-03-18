@@ -93,19 +93,20 @@ class Coding_Bar:
 					self.row += 1
 					self.col = 0
 				elif controlsPressed[i] == K_BACKSPACE or controlsPressed[i] == K_DELETE:
-					if self.col > 0:
-						tempStr = ""
-						for k in range(0,self.col-1):
-							tempStr += self.str[self.row][k]
-						for k in range(self.col,len(self.str[self.row])):
-							tempStr += self.str[self.row][k]
-						self.str[self.row] = tempStr
-						self.col -= 1
-					elif self.row > 0:
-						tempStr = str[self.row]
-						self.str.pop(self.row)
-						self.row -= 1
-						self.str[self.row] = self.str[self.row]+tempStr
+						if self.col > 0:
+							tempStr = ""
+							for k in range(0,self.col-1):
+								tempStr += self.str[self.row][k]
+							for k in range(self.col,len(self.str[self.row])):
+								tempStr += self.str[self.row][k]
+							self.str[self.row] = tempStr
+							self.col -= 1
+						elif self.row > 0:
+							tempStr = self.str[self.row]
+							self.str.pop(self.row)
+							self.row -= 1
+							self.col = len(self.str[self.row])
+							self.str[self.row] = self.str[self.row]+tempStr
 				elif controlsPressed[i] is not K_RSHIFT and controlsPressed[i] is not K_LSHIFT:
 					tempStr = ""
 					moveTheCol = False
