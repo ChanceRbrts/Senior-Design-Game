@@ -8,12 +8,14 @@
 #object, but as a Monster, it decides to finally move.
 from Solid import*
 from Monster import*
-class ClassPuzzle2(Monster):
+class ClassPuzzle2(Solid):
 	def __init__(self,oX=0,oY=0,oW=1,oH=1):
-		Monster.__init__(self,oX,oY,oW,oH)
+		Solid.__init__(self,oX,oY,oW,oH)
 		self.name = "ClassPuzzle2"
+		if (self.collision == "Solid"):
+			self.image = pygame.image.load("Game/Sprites/AsymetricStoneBlock.png")
 		self.codingStartVisible = [0,]
-		self.codingEndVisible = [16,]
+		self.codingEndVisible = [14,]
 	def checkType(self):
 		if (self.collision == "Solid"):
 			pass
@@ -21,10 +23,4 @@ class ClassPuzzle2(Monster):
 			self.dX = -1
 	def finishUpdate(self):
 		self.x += self.dX
-	def draw(self,Window,viewX,viewY):
-		if (self.collision == "Solid"):
-			pygame.draw.rect(Window,(0,0,100),(self.x-viewX,self.y-viewY,self.xSpace*32,self.ySpace*32))
-		else:
-			Monster.draw(self,Window,viewX,viewY)
 	
-

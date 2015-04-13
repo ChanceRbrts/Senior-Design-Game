@@ -5,6 +5,7 @@ class ClassPuzzle1(Solid):
 	def __init__(self,oX=0,oY=0,oW=1,oH=1):
 		Solid.__init__(self,oX,oY,oW,oH)
 		self.name = "ClassPuzzle1"
+		self.image = pygame.image.load("Game/Sprites/AsymetricStoneBlock.png")
 		self.codingStartVisible = [0]
 		self.codingEndVisible = [16]
 	def update(self,controlPressed,controlHold):

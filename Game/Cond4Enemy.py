@@ -15,10 +15,10 @@ class Cond4Enemy(Monster):
 			self.x = 117*32
 			self.pos = "L"
 		elif (pos == 1):
-			self.y = 120*32
+			self.x = 120*32
 			self.pos = "M"
 		elif (pos == 2):
-			self.y = 123*32
+			self.x = 123*32
 			self.pos = "R"
 	def update(self,controlPressed,controlHold):
 		if (self.y >= 4*32):

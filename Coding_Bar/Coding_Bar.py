@@ -216,10 +216,15 @@ class Coding_Bar:
 				tempStr = files[i]
 				try:
 					fileWrite = open("Game/"+files[i],'w')
+					fileWrite2 = open("Temporary/"+files[i],'w')
+					fileWrite3 = open("Temporary2/"+files[i],'w')
 					for line in fileOpen:
 						fileWrite.write(line)
+						fileWrite2.write(line)
+						fileWrite3.write(line)
 					fileWrite.close()
 					fileOpen.close()
+					
 				except IOError:
 					print files[i]
 			fileWrite = open("save.txt",'w')

@@ -16,15 +16,18 @@ class Conditional_Puzzle_1(Solid):
 		Solid.__init__(self,oX,oY,oW,oH)
 		self.name = "Conditional_Puzzle_1"
 		self.ramEverythingDown = True
-		self.codingStartVisible = [0,24,]
-		self.codingEndVisible = [11,26,]
+		self.codingStartVisible = [0,25,]
+		self.codingEndVisible = [11,27,]
 		self.keepIfStatementGoing = True
+		self.image = pygame.image.load('Game/Sprites/AsymetricStoneBlock.png');
 	def ifStatement(self,instances = []):
 		if (self.keepIfStatementGoing):
 			for i in range(0,len(instances)):
-				if instances[i].y/32==7 and instances[i].x/32==19:
+				if instances[i].y/32==0 and instances[i].x/32==9:
 					instances[i].x = 0
 					self.keepIfStatementGoing = False
 	
 	def draw(self,Window,viewX,viewY):
-		pygame.draw.rect(Window,(0,0,100),(self.x-viewX,self.y-viewY,self.xSpace*32,self.ySpace*32))
+		for i in range(0,self.xSpace):
+			for j in range(0,self.ySpace):
+				Window.blit(self.image,(self.x-viewX+i*32,self.y-viewY+j*32))

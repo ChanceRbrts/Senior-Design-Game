@@ -12,9 +12,9 @@ class Array_Puzzle(Solid):
 	def __init__(self,oX=0,oY=0,oW=1,oH=1):
 		Solid.__init__(self,oX,oY,oW,oH)
 		self.name = "Array_Puzzle"
-		self.codingStartVisible = [0,17,]
+		self.image = pygame.image.load("Game/Sprites/AsymetricStoneBlock.png")
+		self.codingStartVisible = [0,18,]
 		self.codingEndVisible = [9,19,]
 	def checkSolid(self,instance):
-		for i in range(0,len(instance)):
-			instance[i].y = 0
+		a = len(instance)
 		return(instance)

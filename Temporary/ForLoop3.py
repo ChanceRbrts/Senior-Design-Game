@@ -12,13 +12,14 @@ from Solid import*
 class ForLoop3(Solid):
 	def __init__(self,oX=0,oY=0,oW=1,oH=1):
 		Solid.__init__(self,oX,oY,oW,oH)
-		self.codingStartVisible = [0,20,]
-		self.codingEndVisible = [10,22,]
+		self.codingStartVisible = [0,21,]
+		self.codingEndVisible = [10,23,]
 		self.name = "ForLoop3"
+		self.image = pygame.image.load("Game/Sprites/AsymetricStoneBlock.png")
 		self.justInCaseTheyLoopForever = 0
 	def whileString(self):
 		string = ""
-		while len(string) < 16:
+		while len(string) < 0:
 			string += "A"
 			self.justInCaseTheyLoopForever += 1
 			if (self.justInCaseTheyLoopForever > 9999):
@@ -28,5 +29,3 @@ class ForLoop3(Solid):
 		if string == "":
 			string = "."
 		return(string)
-	def draw(self,Window,viewX,viewY):
-		pygame.draw.rect(Window,(0,0,100),(self.x-viewX,self.y-viewY,self.xSpace*32,self.ySpace*32))

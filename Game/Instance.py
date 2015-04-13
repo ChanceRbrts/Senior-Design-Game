@@ -69,7 +69,7 @@ class Instance():
 				self.dX = dX
 				self.dY = dY
 	def collideWithMonster(self, oX, oY, oW, oH, oDX=0, oDY=0):
-		if (self.x+self.dX <= oX+oW+oDX and self.x+self.dX >= oX+oDX and self.y+self.dY <= oY+oH+oDY and self.y+self.dY >= oY+oDY):
+		if (self.x+self.dX <= oX+oW+oDX and self.x+self.dX+self.xSpace*32 >= oX+oDX and self.y+self.dY <= oY+oH+oDY and self.y+self.dY+self.ySpace*32 >= oY+oDY):
 			return(True)
 		return(False)
 	

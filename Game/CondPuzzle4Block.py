@@ -3,13 +3,14 @@ class CondPuzzle4Block(Instance):
 	def __init__(self,oX=0,oY=0):
 		Instance.__init__(self,oX,oY)
 		self.name = "CondPuzzle4Block"
+		self.image = pygame.image.load('Game/Sprites/RockBlock.jpg')
 	def getPos(self,posBlock):
 		if (posBlock == 0):
-			x = 117*32
+			self.x = 117*32
 		elif (posBlock == 1):
-			x = 120*32
+			self.x = 120*32
 		elif (posBlock == 2):
-			x = 123*32
+			self.x = 123*32
 	def isInstanceCollide(self, oX, oY, oW, oH):
 		if (oX <= self.x+self.xSpace*32 and oX+oW >= self.x
 			and oY <= self.y+self.ySpace*32 and oY+oH >= self.y):
@@ -17,5 +18,7 @@ class CondPuzzle4Block(Instance):
 		return False
 	
 	def draw(self,Window,viewX,viewY):
-		pygame.draw.rect(Window,(50,50,50),(self.x-viewX,self.y-viewY,self.xSpace*32,self.ySpace*32))
+		for i in range(0,self.xSpace):
+			for j in range(0,self.ySpace):
+				Window.blit(self.image,(self.x-viewX+i*32,self.y-viewY+j*32))
 	

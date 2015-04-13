@@ -1,4 +1,5 @@
 from Solid import*
+from pygame import*
 class YourRacer(Solid):
 	def __init__(self,oX=0,oY=0,oW=1,oH=1):
 		Solid.__init__(self,oX,oY,oW,oH)
@@ -10,8 +11,9 @@ class YourRacer(Solid):
 		#% Gives you the Remainder
 		#- Subtracts Things
 		self.dX = 0
-		self.codingStartVisible = [5,15,19]
-		self.codingEndVisible = [12,16,20]
+		self.codingStartVisible = [6,17,21]
+		self.codingEndVisible = [13,18,22]
+		self.image = pygame.image.load('Game/Sprites/AsymetricStoneBlock.png');
 	def update(self,controlPressed,controlHold):
 		self.dX = 0
 		if (self.dX > 101010):
@@ -19,4 +21,7 @@ class YourRacer(Solid):
 	def finishUpdate(self):
 		self.x += self.dX
 	def draw(self,Window,viewX,viewY):
-		pygame.draw.rect(Window,(0,0,100),(self.x-viewX,self.y-viewY,self.xSpace*32,self.ySpace*32))
+		for i in range(0,self.xSpace):
+						for j in range(0,self.ySpace):
+								Window.blit(self.image,(self.x-viewX+i*32,self.y-viewY+j*32))
+

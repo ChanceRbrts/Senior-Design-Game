@@ -12,6 +12,11 @@ class Player(Instance.Instance):
 		self.ySpace = 1
 		self.name = "Player"
 		self.collision = "Full"
+		self.direction = "Down"
+		self.walkingFrame = 0
+		self.pushingFrame = 0
+		self.prevDX = 0
+		self.prevDY = 0
 	def update(self,controlPressed,controlHold):
 		for i in range(0,len(controlHold)):
 			if controlHold[i] == K_LEFT:
@@ -38,5 +43,69 @@ class Player(Instance.Instance):
 		self.leftHold = False
 		self.upHold = False
 		self.downHold = False
+		self.prevDX = self.dX
+		self.prevDY = self.dY
 	def draw(self,Window,viewX,viewY):
-		pygame.draw.rect(Window,(255,255,255),(self.x-viewX,self.y-viewY,self.xSpace*32,self.ySpace*32))
+		if ((self.dX != 0 or self.dY != 0) and self.walkingFrame == 0):
+				self.walkingFrame = 1
+		if (self.dX == 0):
+				if (self.dY == 0):
+						self.walkingFrame = 0
+				elif (self.dY < 0):
+						self.direction = "Up"
+				elif (self.dY > 0):
+						self.direction = "Down"
+		elif (self.dX < 0):
+				if (self.dY == 0):
+						self.direction = "Left"
+				elif (self.dY < 0):
+						self.direction = "UpLeft"
+				elif (self.dY > 0):
+						self.direction = "DownLeft"
+		elif (self.dX > 0):
+				if (self.dY == 0):
+						self.direction = "Right"
+				elif (self.dY < 0):
+						self.direction = "UpRight"
+				elif (self.dY > 0):
+						self.direction = "DownRight"
+		imageToDraw = "Player"
+		if (self.walkingFrame > 0):
+				self.walkingFrame += 0.25
+				if (self.walkingFrame >= 6):
+						self.walkingFrame = 1
+				imageToDraw = "PlayerWalk"+self.direction+str(int(self.walkingFrame))+".png"
+		else:
+				if (self.prevDX == self.dX and self.prevDY == self.dY):
+						imageToDraw = "PlayerStand"+self.direction+".png"
+						self.pushingFrame = 0
+				else:
+						if (self.prevDX == 0):
+								if (self.prevDY < 0):
+										self.direction = "Up"
+								elif (self.prevDY > 0):
+										self.direction = "Down"
+						elif (self.prevDX < 0):
+								if (self.prevDY == 0):
+										self.direction = "Left"
+								elif (self.prevDY < 0):
+										self.direction = "UpLeft"
+								elif (self.prevDY > 0):
+										self.direction = "DownLeft"
+						elif (self.prevDX > 0):
+								if (self.prevDY == 0):
+										self.direction = "Right"
+								elif (self.prevDY < 0):
+										self.direction = "UpRight"
+								elif (self.prevDY > 0):
+										self.direction = "DownRight"
+						if (self.pushingFrame == 0):
+								self.pushingFrame = 1
+						else:
+								self.pushingFrame += 0.25
+								if (self.pushingFrame >= 6):
+										self.pushingFrame = 1
+						imageToDraw = "PlayerPush"+self.direction+str(int(self.pushingFrame))+".png"
+		image = pygame.image.load('Game/Sprites/Player/'+imageToDraw)
+		Window.blit(image,(self.x-viewX,self.y-viewY))
+		

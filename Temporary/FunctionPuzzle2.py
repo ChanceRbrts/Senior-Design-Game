@@ -7,11 +7,11 @@ class FunctionPuzzle2(Solid):
 		def __init__(self,oX=0,oY=0,oW=1,oH=1):
 			Solid.__init__(self,oX,oY,oW,oH)
 			self.name = "FunctionPuzzle2"
-			self.codingStartVisible = [0,11]
-			self.codingEndVisible = [4,13]
+			self.codingStartVisible = [0,12]
+			self.codingEndVisible = [4,14]
+			self.image = pygame.image.load('Game/Sprites/AsymetricStoneBlock.png');
 		def function(self, obj):
-			obj.x = 0
 			return(obj)
 		def draw(self,Window,viewX,viewY):
 			pygame.draw.rect(Window,(0,0,100),(self.x-viewX,self.y-viewY,self.xSpace*32,self.ySpace*32))
-	
+		

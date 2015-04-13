@@ -13,12 +13,14 @@ from Solid import*
 class TintTheWalkway(Solid):
 	def __init__(self,oX=0,oY=0,oW=1,oH=1):
 		Solid.__init__(self,oX,oY,oW,oH)
-		self.codingStartVisible = [0,19,]
+		self.codingStartVisible = [0,20,]
 		self.codingEndVisible = [11,21,]
 		self.name = "TintTheWalkway"
+		self.image = pygame.image.load('Game/Sprites/AsymetricStoneBlock.png');
 	def tint(self,instance):
-		if instance.name == "Not Safe Spot":
-			instance.color = [255,0,0]
+		instance.color = [0,0,0]
 		return(instance)
 	def draw(self,Window,viewX,viewY):
-		pygame.draw.rect(Window,(0,0,100),(self.x-viewX,self.y-viewY,self.xSpace*32,self.ySpace*32))
+		for i in range(0,self.xSpace):
+			for j in range(0,self.ySpace):
+				Window.blit(self.image,(self.x-viewX+i*32,self.y-viewY+j*32))
