@@ -23,7 +23,7 @@ class Conditional_Puzzle_1(Solid):
 	def ifStatement(self,instances = []):
 		if (self.keepIfStatementGoing):
 			for i in range(0,len(instances)):
-				if instances[i].y/32==0 and instances[i].x/32==9:
+				if instances[i].y/32==0 and instances[i].x/32==0:
 					instances[i].x = 0
 					self.keepIfStatementGoing = False
 	

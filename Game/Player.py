@@ -12,9 +12,11 @@ class Player(Instance.Instance):
 		self.ySpace = 1
 		self.name = "Player"
 		self.collision = "Full"
-		self.direction = "Down"
+		self.direction = 180
 		self.walkingFrame = 0
+		self.maxWalkingFrame = 10
 		self.pushingFrame = 0
+		self.maxPushingFrame = 2
 		self.prevDX = 0
 		self.prevDY = 0
 	def update(self,controlPressed,controlHold):
@@ -52,60 +54,60 @@ class Player(Instance.Instance):
 				if (self.dY == 0):
 						self.walkingFrame = 0
 				elif (self.dY < 0):
-						self.direction = "Up"
+						self.direction = 0
 				elif (self.dY > 0):
-						self.direction = "Down"
+						self.direction = 180
 		elif (self.dX < 0):
 				if (self.dY == 0):
-						self.direction = "Left"
+						self.direction = 90
 				elif (self.dY < 0):
-						self.direction = "UpLeft"
+						self.direction = 45
 				elif (self.dY > 0):
-						self.direction = "DownLeft"
+						self.direction = 135
 		elif (self.dX > 0):
 				if (self.dY == 0):
-						self.direction = "Right"
+						self.direction = 270
 				elif (self.dY < 0):
-						self.direction = "UpRight"
+						self.direction = 315
 				elif (self.dY > 0):
-						self.direction = "DownRight"
+						self.direction = 225
 		imageToDraw = "Player"
 		if (self.walkingFrame > 0):
 				self.walkingFrame += 0.25
-				if (self.walkingFrame >= 6):
+				if (self.walkingFrame >= self.maxWalkingFrame+1):
 						self.walkingFrame = 1
-				imageToDraw = "PlayerWalk"+self.direction+str(int(self.walkingFrame))+".png"
+				imageToDraw = "Step "+str(int(self.walkingFrame))+".png"
 		else:
 				if (self.prevDX == self.dX and self.prevDY == self.dY):
-						imageToDraw = "PlayerStand"+self.direction+".png"
+						imageToDraw = "Step 10.png"
 						self.pushingFrame = 0
 				else:
 						if (self.prevDX == 0):
 								if (self.prevDY < 0):
-										self.direction = "Up"
+										self.direction = 0
 								elif (self.prevDY > 0):
-										self.direction = "Down"
+										self.direction = 180
 						elif (self.prevDX < 0):
 								if (self.prevDY == 0):
-										self.direction = "Left"
+										self.direction = 90
 								elif (self.prevDY < 0):
-										self.direction = "UpLeft"
+										self.direction = 45
 								elif (self.prevDY > 0):
-										self.direction = "DownLeft"
+										self.direction = 135
 						elif (self.prevDX > 0):
 								if (self.prevDY == 0):
-										self.direction = "Right"
+										self.direction = 270
 								elif (self.prevDY < 0):
-										self.direction = "UpRight"
+										self.direction = 315
 								elif (self.prevDY > 0):
-										self.direction = "DownRight"
+										self.direction = 225
 						if (self.pushingFrame == 0):
 								self.pushingFrame = 1
 						else:
 								self.pushingFrame += 0.25
-								if (self.pushingFrame >= 6):
+								if (self.pushingFrame >= self.maxPushingFrame+1):
 										self.pushingFrame = 1
-						imageToDraw = "PlayerPush"+self.direction+str(int(self.pushingFrame))+".png"
+						imageToDraw = "Push "+str(int(self.pushingFrame))+".png"
 		image = pygame.image.load('Game/Sprites/Player/'+imageToDraw)
-		Window.blit(image,(self.x-viewX,self.y-viewY))
+		Window.blit(pygame.transform.rotate(image, self.direction),(self.x-viewX,self.y-viewY))
 		

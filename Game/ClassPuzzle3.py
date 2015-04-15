@@ -16,10 +16,8 @@ class ClassPuzzle3(Solid):
 		Solid.__init__(self,oX,oY,oW,oH)
 		self.name = "ClassPuzzle3"
 		self.objects = []
-		for i in range(0,10):
-			self.objects.append(Solid())
 		self.codingStartVisible = [0,]
-		self.codingEndVisible = [26,]
+		self.codingEndVisible = [24,]
 		self.image = pygame.image.load('Game/Sprites/AsymetricStoneBlock.png');
 	
 #You can have more than 1 object in the .py file.

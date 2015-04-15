@@ -11,11 +11,11 @@ class YourRacer(Solid):
 		#% Gives you the Remainder
 		#- Subtracts Things
 		self.dX = 0
-		self.codingStartVisible = [6,17,21,]
-		self.codingEndVisible = [13,18,22,]
+		self.codingStartVisible = [6,17,21]
+		self.codingEndVisible = [13,18,22]
 		self.image = pygame.image.load('Game/Sprites/AsymetricStoneBlock.png');
 	def update(self,controlPressed,controlHold):
-		self.dX = 1
+		self.dX = 0
 		if (self.dX > 101010):
 			self.dX = 101010
 	def finishUpdate(self):

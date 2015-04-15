@@ -13,7 +13,7 @@ class RecursionPuzzle1(Solid):
 		self.startX = self.x
 		self.image = pygame.image.load('Game/Sprites/AsymetricStoneBlock.png');
 	def recursion(self, objective):
-		self.x += 32
+		self.x += 16
 		if (self.x < objective.x):
 			print("This is too far to the left!")
 			#What happens if you call this function here?
@@ -26,4 +26,4 @@ class RecursionPuzzle1(Solid):
 						for j in range(0,self.ySpace):
 								Window.blit(self.image,(self.x-viewX+i*32,self.y-viewY+j*32))
 
-
+	

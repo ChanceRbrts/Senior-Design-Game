@@ -11,7 +11,7 @@ class For_Loops(Solid):
 		self.image = pygame.image.load('Game/Sprites/AsymetricStoneBlock.png')
 		self.startX = self.x
 	def doTheForLoop(self):
-		for i in range(0,8):
+		for i in range(0,2):
 			self.x += 16
 			self.forLoop += 1
 	def correctThisObject(self):

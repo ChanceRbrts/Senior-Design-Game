@@ -10,13 +10,11 @@ class Conditional_Puzzle_5(Solid):
 	def __init__(self,oX=0,oY=0,oW=1,oH=1):
 		Solid.__init__(self,oX,oY,oW,oH)
 		self.codingStartVisible = [0,16,]
-		self.codingEndVisible = [7,19,]
+		self.codingEndVisible = [7,17,]
 		self.name = "Conditional_Puzzle_5"
 		self.image = pygame.image.load('Game/Sprites/AsymetricStoneBlock.png')
 	def collisionOfSolidObject(self,name):
 		goThrough = False
-		if (name == 'DoorPart1' or name == 'DoorPart2'):
-			goThrough = True
 		return(goThrough)
 	def collideWithSolid(self, oX, oY, oW, oH, oDX=0, oDY=0, name=""):
 		x = oX
